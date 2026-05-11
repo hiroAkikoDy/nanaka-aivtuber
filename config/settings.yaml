@@ -1,0 +1,12 @@
+llm:
+  model: "gpt-4o-mini"
+  base_url: "https://api.openai.com/v1"
+  system_prompt_file: "system_prompt.txt"
+
+voicevox:
+  host: "127.0.0.1"
+  port: 50021
+  speaker_id: 3
+
+audio:
+  output_device_name: "CABLE Input"

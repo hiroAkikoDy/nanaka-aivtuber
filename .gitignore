@@ -9,3 +9,10 @@ dist/
 build/
 .venv/
 venv/
+
+# YouTube API 認証情報
+credentials/client_secret.json
+credentials/token.json
+
+# OBS出力ファイル
+output/*.txt

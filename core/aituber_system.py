@@ -24,12 +24,16 @@ def load_settings():
 class AITuberSystem:
     def __init__(self) -> None:
         video_id = os.getenv("YOUTUBE_VIDEO_ID")
-        self.youtube_comment_adapter = YoutubeCommentAdapter(video_id)
+        self.youtube_comment_adapter = YoutubeCommentAdapter(video_id) if video_id else None
         self.langchain_adapter = LangChainAdapter()
         self.emotion_agent = EmotionAgent()
         self.memory_agent = MemoryAgent()
         self.voice_adapter = VoicevoxAdapter()
-        self.obs_adapter = OBSAdapter()
+        try:
+            self.obs_adapter = OBSAdapter()
+        except Exception:
+            self.obs_adapter = None
+            print("[AITuberSystem] OBS接続なし（テキストファイル出力モード）")
         self.play_sound = PlaySound(output_device_name="CABLE Input")
 
         # マルチペルソナ設定の読み込み
@@ -71,8 +75,9 @@ class AITuberSystem:
             nanaka_turns = [t for t in dialogue if t['persona'] == 'nanaka']
             if nanaka_turns:
                 first_nanaka_response = nanaka_turns[0]['text']
-                self.obs_adapter.set_question(comment)
-                self.obs_adapter.set_answer(first_nanaka_response)
+                if self.obs_adapter:
+                    self.obs_adapter.set_question(comment)
+                    self.obs_adapter.set_answer(first_nanaka_response)
 
             # 記憶保存: 最後のナナカの発言を保存
             if nanaka_turns:
@@ -84,10 +89,43 @@ class AITuberSystem:
             response_text = self.langchain_adapter.create_chat(comment, emotion=emotion, memory=memory)
             print(f"[応答] {response_text}")
             data, rate = self.voice_adapter.get_voice(response_text, speed=speed, pitch=pitch)
-            self.obs_adapter.set_question(comment)
-            self.obs_adapter.set_answer(response_text)
+            if self.obs_adapter:
+                self.obs_adapter.set_question(comment)
+                self.obs_adapter.set_answer(response_text)
             self.play_sound.play_sound(data, rate)
             self.memory_agent.save_interaction(viewer_name, comment, emotion, response_text)
             print(f"[記憶保存] {viewer_name} の会話を保存しました")
 
         return True
+
+    def get_dialogue_response(self, viewer_name: str, comment: str) -> list[dict]:
+        """
+        マルチペルソナモードの会話を取得（音声再生なし）
+
+        Args:
+            viewer_name: 視聴者名
+            comment: コメント内容
+
+        Returns:
+            list[dict]: [
+                {"persona": "nanaka", "text": "...", "speaker_id": 46},
+                {"persona": "ryou", "text": "...", "speaker_id": 3},
+                ...
+            ]
+        """
+        if not self.multi_persona_enabled:
+            return []
+
+        memory = self.memory_agent.get_memory(viewer_name)
+
+        emotion_result = self.emotion_agent.analyze(comment)
+        emotion = emotion_result["emotion"]
+
+        dialogue = self.dialogue_coordinator.coordinate_dialogue(comment, emotion)
+
+        nanaka_turns = [t for t in dialogue if t['persona'] == 'nanaka']
+        if nanaka_turns:
+            last_nanaka_response = nanaka_turns[-1]['text']
+            self.memory_agent.save_interaction(viewer_name, comment, emotion, last_nanaka_response)
+
+        return dialogue

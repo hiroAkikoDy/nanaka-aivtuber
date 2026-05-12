@@ -35,11 +35,26 @@ class VoicevoxAdapter:
         print(res.status_code)
         return res.content
 
-    def get_voice(self, text: str, speed: float = 1.0, pitch: float = 0.0):
-        query_data = self.__create_audio_query(text, speaker_id=self.speaker_id)
+    def get_voice(self, text: str, speaker_id: int = None, speed: float = 1.0, pitch: float = 0.0):
+        """
+        音声を生成する
+
+        Args:
+            text: 読み上げるテキスト
+            speaker_id: VOICEVOXのspeaker_id（Noneの場合はデフォルト値を使用）
+            speed: 話速（1.0が標準）
+            pitch: ピッチ（0.0が標準）
+
+        Returns:
+            tuple: (data, sample_rate)
+        """
+        if speaker_id is None:
+            speaker_id = self.speaker_id  # 既存のデフォルト値
+
+        query_data = self.__create_audio_query(text, speaker_id=speaker_id)
         query_data["speedScale"] = speed
         query_data["pitchScale"] = pitch
-        audio_bytes = self.__create_request_audio(query_data, speaker_id=self.speaker_id)
+        audio_bytes = self.__create_request_audio(query_data, speaker_id=speaker_id)
         audio_stream = io.BytesIO(audio_bytes)
         data, sample_rate = soundfile.read(audio_stream)
         return data, sample_rate

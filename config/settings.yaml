@@ -10,3 +10,8 @@ voicevox:
 
 audio:
   output_device_name: "CABLE Input"
+
+multi_persona:
+  enabled: true  # true: マルチペルソナモード / false: 単独モード
+  mode: "dialogue"  # dialogue: 対話モード / solo: 単独モード
+  turn_limit: 4  # 最大会話ターン数（ナナカ→リョウ→ナナカ→リョウで4ターン）

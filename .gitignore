@@ -16,3 +16,6 @@ credentials/token.json
 
 # OBS出力ファイル
 output/*.txt
+
+# Claude Code設定
+.claude/

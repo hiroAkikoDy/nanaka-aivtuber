@@ -18,9 +18,20 @@
 - INV_1〜INV_18 は前プロジェクトの履歴（本プロジェクトでは参照不要）
 
 ## 本プロジェクトの目標機能
-1. 視聴者記憶（Neo4j + LangChain Ch6）—「前回〇〇さんが質問した件ですが」
-2. 感情状態管理（LangGraph Ch9）— コメント感情 → AIVTuber感情変化 → VOICEVOX連動
-3. マルチペルソナ配信（LangChain Ch12）— 農家AIVTuber × シェフAIVTuberが議論
+1. 視聴者記憶（Neo4j + LangChain Ch6）—「前回〇〇さんが質問した件ですが」✅ 実装済み
+2. 感情状態管理（LangGraph Ch9）— コメント感情 → AIVTuber感情変化 → VOICEVOX連動 ✅ 実装済み
+3. マルチペルソナ配信（LangChain Ch12）— 農家AIVTuber × シェフAIVTuberが議論 ✅ 実装済み
+
+## 実装済み機能一覧（STEP1〜STEP5）
+- 基本AIVTuber機能（VOICEVOX連携・音声合成）
+- プロンプトテンプレート管理（LangChain）
+- 感情状態管理（EmotionAgent / ParameterAdapter）
+- 感情に応じたVOICEVOXパラメータ動的調整
+- Neo4j視聴者記憶（ViewerMemoryAgent）
+- マルチペルソナ対話（ナナカ・リョウの会話）
+- ペルソナエージェント（PersonaAgent）
+- 対話調整（DialogueCoordinator）
+- 動的speaker_id切り替え
 
 ## 実装ステップ
 - STEP 1：最小構成AIVTuber（書籍コードベース）✅ 完了
@@ -28,7 +39,7 @@
 - STEP 3：LangGraph Ch9 感情状態管理 ✅ 完了（2026-05-09 12:32）
 - STEP 3.5：add_conditional_edges 実践（感情→VOICEVOXパラメータ分岐）✅ 完了（2026-05-10 00:01）
 - STEP 4：Neo4j Ch6 視聴者記憶 ✅ 完了（2026-05-11 12:22）
-- STEP 5：LangChain Ch12 マルチペルソナ ← 現在地
+- STEP 5：LangChain Ch12 マルチペルソナ ✅ 完了（2026-05-12）
 
 ## 参考書籍・リポジトリ
 1. 「AITuberを作ってみたら生成AIプログラミングがよくわかった件」（日経・Python）

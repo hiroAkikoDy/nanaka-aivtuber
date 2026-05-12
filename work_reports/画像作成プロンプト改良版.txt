@@ -1,0 +1,194 @@
+🎨 キャラクター画像生成プロンプト
+
+  ナナカ（クレソン農家）のプロンプト
+
+  英語版（Stable Diffusion / Midjourney / DALL-E 3用）
+
+  A cheerful anime-style VTuber character portrait, young female farmer named Nanaka, wearing a light green apron and straw hat, short brown hair with green highlights, bright emerald green eyes, gentle smile, holding a fresh watercress bunch, pixelated retro aesthetic similar to 90s desktop mascots, soft pastel colors, transparent PNG background, kawaii chibi proportions, farming theme accessories, simple and clean design, 1024x1024 resolution
+
+  Style: pixel art, retro digital art, anime mascot
+  Mood: cheerful, energetic, friendly
+  Colors: green, brown, cream, light yellow
+  Negative prompt: realistic, 3D, photographic, dark colors, complex background
+
+ ---
+  リョウ（シェフ）のプロンプト
+
+  英語版（Stable Diffusion / Midjourney / DALL-E 3用）
+
+  A sophisticated anime-style VTuber character portrait, young male chef named Ryou, wearing white chef's coat and small chef's hat, neat short black hair, calm blue-gray eyes, gentle professional smile, holding a cooking spatula or whisk, pixelated retro aesthetic similar to 90s desktop mascots, cool pastel colors with blue and white tones, transparent PNG background, kawaii chibi proportions, culinary theme accessories, simple and clean design, 1024x1024 resolution
+
+  Style: pixel art, retro digital art, anime mascot
+  Mood: calm, intelligent, professional
+  Colors: blue, white, silver, light gray
+  Negative prompt: realistic, 3D, photographic, bright red colors, complex background
+
+---
+● 了解しました！サンプル画像のように、表情だけでなく身振り手振り（ジェスチャー・ポーズ）も含めた、より表現豊かなプロンプトにブラッシュアップします。
+
+  ---
+  🎭 感情バリエーション生成プロンプト（身振り手振り強化版）
+
+  ✅ 通常（normal）
+
+  英語版
+
+  , neutral calm expression, eyes open and relaxed, gentle smile, natural relaxed posture, hands resting naturally at sides or loosely clasped in front, head straight and centered, standing or sitting comfortably, peaceful atmosphere
+
+  日本語版
+
+  、穏やかで落ち着いた表情、リラックスした開いた目、優しい微笑み、自然でリラックスした姿勢、手は体の横に自然に置くか前で軽く組む、頭はまっすぐ中央、立っているまたは快適に座っている、平和な雰囲気
+
+  ---
+  ✅ 嬉しい（happy）
+
+  英語版
+
+  , bright joyful smile with closed or sparkling eyes, rosy blushing cheeks, one or both hands waving hello, peace sign gesture, or hands clasped together near chest in delight, slightly tilted head to the side, bouncy cheerful pose, warm glowing atmosphere, happy energy radiating
+
+  日本語版
+
+  、明るく喜びに満ちた笑顔、閉じた目または輝く目、赤らんだ頬、片手または両手で手を振る、ピースサイン、または喜びで胸の前で手を合わせる、頭を少し横に傾ける、弾むような明るいポーズ、温かく輝く雰囲気、幸せなエネルギーが溢れる
+
+  ---
+  ✅ ワクワク（excited）
+
+  英語版
+
+  , extremely excited expression with wide sparkling eyes and huge smile, both arms raised up in the air in celebration, fists clenched in excitement or hands open wide, leaning forward eagerly, energetic bouncing pose as if jumping, head tilted back slightly, dynamic movement lines, electrifying enthusiastic atmosphere
+
+  日本語版
+
+  、非常に興奮した表情、大きく輝く目と満面の笑み、両腕を空中に上げて祝う、興奮で拳を握るか両手を大きく開く、熱心に前のめりになる、ジャンプするような活発で弾むポーズ、頭を少し後ろに傾ける、動きの線、電撃的で熱狂的な雰囲気
+
+  ---
+  ✅ 驚き（surprised）
+
+  英語版
+
+  , shocked surprised expression, eyes extremely wide open, mouth forming an "O" shape, raised eyebrows, both hands placed on cheeks in surprise, or one hand covering mouth, body slightly leaning back, stiff upright posture from shock, head pulled back slightly, startle marks or sweat drops, dramatic shocking atmosphere
+
+  日本語版
+
+  、ショックを受けた驚きの表情、非常に大きく開いた目、口が「O」の形、上がった眉、両手を頬に当てる、または片手で口を覆う、体を少し後ろに傾ける、ショックで硬直した直立姿勢、頭を少し後ろに引く、驚きのマークや汗の滴、劇的で衝撃的な雰囲気
+
+  ---
+  ✅ 悲しい（sad）
+
+  英語版
+
+  , sad melancholy expression, downcast eyes looking down or slightly teary, small frown or quivering lip, drooping shoulders hunched forward, one hand placed over heart or chest in sadness, other hand hanging limply at side, head bowed down, body curled inward protectively, slumped dejected posture, blue gloomy atmosphere with shadowy tones
+
+  日本語版
+
+  、悲しく憂鬱な表情、下を向いた目または少し涙ぐんだ目、小さく眉を下げるか震える唇、前に丸まった垂れ下がった肩、片手を悲しみで胸や心臓の上に置く、もう片方の手は体の横に力なく垂らす、頭を下に向ける、体を内側に丸めて守るような姿勢、うなだれた落胆したポーズ、影のあるトーンの青く陰鬱な雰囲気
+
+  ---
+  🎨 完全版プロンプト例（ナナカ・通常）
+
+  英語版（Geminiでそのまま使用可能）
+
+  A cheerful anime-style VTuber character portrait, young female farmer named Nanaka, wearing a light green apron and straw hat, short brown hair with green highlights, bright emerald green eyes, gentle smile, holding a fresh watercress bunch, pixelated retro aesthetic similar to 90s desktop mascots, soft pastel colors, transparent PNG background, kawaii chibi proportions, farming theme accessories, simple and clean design, 1024x1024 resolution, neutral calm expression, eyes open and relaxed, gentle smile, natural relaxed posture, hands resting naturally at sides or loosely clasped in front, head straight and centered, standing or sitting comfortably, peaceful atmosphere
+
+  Style: pixel art, retro digital art, anime mascot
+  Mood: cheerful, friendly, peaceful
+  Colors: green, brown, cream, light yellow
+
+  ---
+  🎨 完全版プロンプト例（ナナカ・嬉しい）
+
+  英語版（Geminiでそのまま使用可能）
+
+  A cheerful anime-style VTuber character portrait, young female farmer named Nanaka, wearing a light green apron and straw hat, short brown hair with green highlights, bright emerald green eyes, holding a fresh watercress bunch, pixelated retro aesthetic similar to 90s desktop mascots, soft pastel colors, transparent PNG background, kawaii chibi proportions, farming theme accessories, simple and clean design, 1024x1024 resolution, bright joyful smile with closed or sparkling eyes, rosy blushing cheeks, one or both hands waving hello, peace sign gesture, or hands clasped together near chest in delight, slightly tilted head to the side, bouncy cheerful pose, warm glowing atmosphere, happy energy radiating
+
+  Style: pixel art, retro digital art, anime mascot
+  Mood: joyful, bright, energetic
+  Colors: green, brown, cream, light yellow, warm pink blush
+
+  ---
+  🎨 完全版プロンプト例（リョウ・ワクワク）
+
+  英語版（Geminiでそのまま使用可能）
+
+  A sophisticated anime-style VTuber character portrait, young male chef named Ryou, wearing white chef's coat and small chef's hat, neat short black hair, calm blue-gray eyes, holding a cooking spatula or whisk, pixelated retro aesthetic similar to 90s desktop mascots, cool pastel colors with blue and white tones, transparent PNG background, kawaii chibi proportions, culinary theme accessories, simple and clean design, 1024x1024 resolution, extremely excited expression with wide sparkling eyes and huge smile, both arms raised up in the air in celebration, fists clenched in excitement or hands open wide, leaning forward eagerly, energetic bouncing pose as if jumping, head tilted back slightly, dynamic movement lines, electrifying enthusiastic atmosphere
+
+  Style: pixel art, retro digital art, anime mascot
+  Mood: excited, enthusiastic, energetic
+  Colors: blue, white, silver, light gray, electric energy effects
+
+  ---
+  📋 ジェスチャー・ポーズ対応表
+  感情: 通常
+  表情: 穏やかな微笑み
+  手のジェスチャー: 体の横、または前で軽く組む
+  体のポーズ: リラックス
+  頭の動き: まっすぐ
+  追加要素: 平和な雰囲気
+  ────────────────────────────────────────
+  感情: 嬉しい
+  表情: 明るい笑顔、赤らんだ頬
+  手のジェスチャー: 手を振る、ピースサイン、胸の前で手を合わせる
+  体のポーズ: 弾むような姿勢
+  頭の動き: 少し横に傾ける
+  追加要素: 温かい光
+  ────────────────────────────────────────
+  感情: ワクワク
+  表情: 大きな笑顔、輝く目
+  手のジェスチャー: 両腕を上げる、拳を握る
+  体のポーズ: ジャンプする、前のめり
+  頭の動き: 少し後ろに傾ける
+  追加要素: 動きの線、エネルギー効果
+  ────────────────────────────────────────
+  感情: 驚き
+  表情: 大きく開いた目、口が「O」
+  手のジェスチャー: 両手を頬に、口を覆う
+  体のポーズ: 後ろに傾く、硬直
+  頭の動き: 後ろに引く
+  追加要素: 驚きマーク、汗
+  ────────────────────────────────────────
+  感情: 悲しい
+  表情: 伏し目、震える唇
+  手のジェスチャー: 胸に手を当てる、力なく垂らす
+  体のポーズ: 丸まる、うなだれる
+  頭の動き: 下を向く
+  追加要素: 青い雰囲気、影
+  ---
+  💡 Geminiでの使用方法
+
+  1. Google AI Studio使用
+
+  1. https://aistudio.google.com/ にアクセス
+  2. "Image generation" を選択
+  3. 上記の完全版プロンプト（英語版）を貼り付け
+  4. "Generate" をクリック
+  5. 生成された画像をダウンロード
+
+  2. プロンプトのカスタマイズ
+
+  各感情について、基本プロンプト（キャラクター設定）+ 感情プロンプト（身振り手振り）を組み合わせます。
+
+  例: ナナカ・驚き
+  [ナナカの基本プロンプト] + shocked surprised expression, eyes extremely wide open, mouth forming an "O" shape, raised eyebrows, both hands placed on cheeks in surprise, or one hand covering mouth, body slightly leaning back, stiff upright posture from shock, head pulled back slightly, startle marks or sweat drops, dramatic shocking atmosphere
+
+  ---
+  ✅ プロンプト改善ポイント
+
+  Before（表情のみ）
+
+  surprised expression, wide eyes, slightly open mouth, raised eyebrows
+
+  After（身振り手振り追加）
+
+  shocked surprised expression, eyes extremely wide open, mouth forming an "O" shape, raised eyebrows, both hands placed on cheeks in surprise, or one hand covering mouth, body slightly leaning back, stiff upright posture from shock, head pulled back slightly, startle marks or sweat drops, dramatic shocking atmosphere
+
+  追加された要素:
+  - 手のジェスチャー（両手を頬に、口を覆う）
+  - 体のポーズ（後ろに傾く、硬直）
+  - 頭の動き（後ろに引く）
+  - 視覚効果（驚きマーク、汗）
+  - 雰囲気（劇的で衝撃的）
+
+  ---
+  これらのプロンプトを使用することで、サンプル画像のように感情豊かで動きのあるキャラクター画像が生成できます！各感情で5枚ずつ（ナナカ5枚 + リョウ5枚 = 合計10枚）生成してください🎨
+
+✻ Crunched for 60s

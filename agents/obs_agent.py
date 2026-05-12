@@ -1,16 +1,26 @@
 """
-OBSウェブソケット連携エージェント
+OBSウェブソケット連携エージェント（新実装）
 
 OBS Studio と WebSocket 経由で通信し、以下の機能を提供：
 - シーン切り替え
 - ソース表示・非表示制御
 - 画像ソース更新（キャラクター画像切り替え）
 - テキストソース更新
+- キャラクター表示・切り替え（感情連動）
+
+【ライブラリ】obsws-python (obsws_python)
+【設定ファイル】config/settings.yaml の obs.websocket セクション
+
+【旧実装との違い】
+- core/obs_adapter.py: 環境変数から設定、Question/Answerのみ
+- agents/obs_agent.py: settings.yamlから設定、多機能対応
+
+run_live.py では本クラス（OBSAgent）を使用します。
 """
 
 import os
 from typing import Optional, Dict, Any
-from obswebsocket import obsws, requests as obs_requests
+import obsws_python as obs
 
 
 class OBSAgent:
@@ -33,7 +43,7 @@ class OBSAgent:
         self.scenes = self.obs_config.get("scenes", {})
         self.sources = self.obs_config.get("sources", {})
 
-        self.ws: Optional[obsws] = None
+        self.ws: Optional[obs.ReqClient] = None
         self.connected = False
 
         if self.enabled:
@@ -45,8 +55,7 @@ class OBSAgent:
             return True
 
         try:
-            self.ws = obsws(self.host, self.port, self.password)
-            self.ws.connect()
+            self.ws = obs.ReqClient(host=self.host, port=self.port, password=self.password)
             self.connected = True
             print(f"[OBS] WebSocket接続成功: {self.host}:{self.port}")
             return True
@@ -60,7 +69,8 @@ class OBSAgent:
         """OBSウェブソケットから切断"""
         if self.ws and self.connected:
             try:
-                self.ws.disconnect()
+                # obsws-pythonはクローズメソッドを持たないため、接続フラグのみ変更
+                self.ws = None
                 self.connected = False
                 print("[OBS] WebSocket切断")
             except Exception as e:
@@ -80,7 +90,7 @@ class OBSAgent:
             return False
 
         try:
-            self.ws.call(obs_requests.SetCurrentProgramScene(sceneName=scene_name))
+            self.ws.set_current_program_scene(scene_name)
             print(f"[OBS] シーン切り替え: {scene_name}")
             return True
         except Exception as e:
@@ -120,15 +130,16 @@ class OBSAgent:
 
         try:
             # 現在のシーン名を取得
-            current_scene_response = self.ws.call(obs_requests.GetCurrentProgramScene())
-            scene_name = current_scene_response.datain['currentProgramSceneName']
+            current_scene = self.ws.get_current_program_scene()
+            scene_name = current_scene.current_program_scene_name
+
+            # シーンアイテムIDを取得
+            item_id = self._get_scene_item_id(scene_name, source_name)
+            if item_id == -1:
+                return False
 
             # ソースの表示・非表示を設定
-            self.ws.call(obs_requests.SetSceneItemEnabled(
-                sceneName=scene_name,
-                sceneItemId=self._get_scene_item_id(scene_name, source_name),
-                sceneItemEnabled=visible
-            ))
+            self.ws.set_scene_item_enabled(scene_name, item_id, visible)
 
             status = "表示" if visible else "非表示"
             print(f"[OBS] ソース '{source_name}' を{status}に設定")
@@ -149,11 +160,8 @@ class OBSAgent:
             シーンアイテムID
         """
         try:
-            response = self.ws.call(obs_requests.GetSceneItemId(
-                sceneName=scene_name,
-                sourceName=source_name
-            ))
-            return response.datain['sceneItemId']
+            response = self.ws.get_scene_item_id(scene_name, source_name, 0)
+            return response.scene_item_id
         except Exception as e:
             print(f"[OBS] シーンアイテムID取得エラー: {e}")
             return -1
@@ -178,10 +186,7 @@ class OBSAgent:
 
         try:
             # 画像ソースの設定を更新
-            self.ws.call(obs_requests.SetInputSettings(
-                inputName=source_name,
-                inputSettings={"file": image_path}
-            ))
+            self.ws.set_input_settings(source_name, {"file": image_path}, True)
             print(f"[OBS] 画像ソース '{source_name}' を更新: {os.path.basename(image_path)}")
             return True
         except Exception as e:
@@ -203,10 +208,7 @@ class OBSAgent:
             return False
 
         try:
-            self.ws.call(obs_requests.SetInputSettings(
-                inputName=source_name,
-                inputSettings={"text": text}
-            ))
+            self.ws.set_input_settings(source_name, {"text": text}, True)
             print(f"[OBS] テキストソース '{source_name}' を更新")
             return True
         except Exception as e:

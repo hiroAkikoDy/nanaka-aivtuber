@@ -1,0 +1,194 @@
+● 素晴らしいサンプル画像ですね！ピクセルアート風のレトロなVTuberキャラクターです。
+
+  Z.aiでの画像生成について
+
+  重要な前提
+
+  Z.ai（Claude API）は現時点で画像生成機能を直接提供していません。 Z.aiは主にテキスト生成・理解に特化したサービスです。
+
+  推奨アプローチ
+
+  以下の画像生成サービスを使用することをお勧めします：
+
+  1. Stable Diffusion（無料・ローカル実行可能）
+  2. Midjourney（有料・高品質）
+  3. DALL-E 3（OpenAI API経由）
+  4. Leonardo.ai（無料枠あり）
+  5. Bing Image Creator（無料・DALL-E 3ベース）
+
+  ---
+  🎨 キャラクター画像生成プロンプト
+
+  ナナカ（クレソン農家）のプロンプト
+
+  英語版（Stable Diffusion / Midjourney / DALL-E 3用）
+
+  A cheerful anime-style VTuber character portrait, young female farmer named Nanaka, wearing a light green apron and straw hat, short brown hair with green highlights, bright emerald green eyes, gentle smile, holding a fresh watercress bunch, pixelated retro aesthetic similar to 90s desktop mascots, soft pastel colors, transparent PNG background, kawaii chibi proportions, farming theme accessories, simple and clean design, 1024x1024 resolution
+
+  Style: pixel art, retro digital art, anime mascot
+  Mood: cheerful, energetic, friendly
+  Colors: green, brown, cream, light yellow
+  Negative prompt: realistic, 3D, photographic, dark colors, complex background
+
+  日本語版（日本のAI画像生成サービス用）
+
+  明るく元気なアニメ調のVTuberキャラクター、若い女性農家「ナナカ」、薄緑色のエプロンと麦わら帽子を着用、短い茶色の髪に緑のハイライト、明るいエメラルドグリーンの瞳、優しい笑顔、新鮮なクレソンの束を持っている、90年代のデスクトップマスコット風のピクセルアート調、柔らかいパステルカラー、透過PNG背景、かわいいちびプロポーション、農業テーマのアクセサリー、シンプルでクリーンなデザイン、1024x1024解像度
+
+  スタイル: ピクセルアート、レトロデジタルアート、アニメマスコット
+  雰囲気: 明るい、元気、親しみやすい
+  カラー: 緑、茶色、クリーム、薄黄色
+  ネガティブプロンプト: リアル、3D、写真的、暗い色、複雑な背景
+
+  ---
+  リョウ（シェフ）のプロンプト
+
+  英語版（Stable Diffusion / Midjourney / DALL-E 3用）
+
+  A sophisticated anime-style VTuber character portrait, young male chef named Ryou, wearing white chef's coat and small chef's hat, neat short black hair, calm blue-gray eyes, gentle professional smile, holding a cooking spatula or whisk, pixelated retro aesthetic similar to 90s desktop mascots, cool pastel colors with blue and white tones, transparent PNG background, kawaii chibi proportions, culinary theme accessories, simple and clean design, 1024x1024 resolution
+
+  Style: pixel art, retro digital art, anime mascot
+  Mood: calm, intelligent, professional
+  Colors: blue, white, silver, light gray
+  Negative prompt: realistic, 3D, photographic, bright red colors, complex background
+
+  日本語版（日本のAI画像生成サービス用）
+
+  知的で落ち着いたアニメ調のVTuberキャラクター、若い男性シェフ「リョウ」、白いコックコートと小さなコック帽を着用、整った短い黒髪、穏やかな青灰色の瞳、優しくプロフェッショナルな笑顔、調理用のヘラまたは泡立て器を持っている、90年代のデスクトップマスコット風のピクセルアート調、青と白のトーンのクールなパステルカラー、透過PNG背景、かわいいちびプロポーション、料理テーマのアクセサリー、シンプルでクリーンなデザイン、1024x1024解像度
+
+  スタイル: ピクセルアート、レトロデジタルアート、アニメマスコット
+  雰囲気: 落ち着いた、知的、プロフェッショナル
+  カラー: 青、白、シルバー、薄グレー
+  ネガティブプロンプト: リアル、3D、写真的、明るい赤色、複雑な背景
+
+  ---
+  🖼️ 感情バリエーション生成プロンプト
+
+  各キャラクターの基本プロンプトに以下を追加：
+
+  ☑通常（normal）
+
+  , neutral expression, eyes open, relaxed posture
+  （通常の表情、目を開けた状態、リラックスした姿勢）
+
+  ☑嬉しい（happy）
+
+  , bright happy smile, eyes sparkling with joy, slightly blushing cheeks
+  （明るく幸せな笑顔、喜びで輝く目、少し赤らんだ頬）
+
+  ☑ワクワク（excited）
+
+  , excited expression, wide open eyes, energetic pose, excited smile
+  （興奮した表情、大きく開いた目、エネルギッシュなポーズ、ワクワクした笑顔）
+
+  ☑驚き（surprised）
+
+  , surprised expression, wide eyes, slightly open mouth, raised eyebrows
+  （驚いた表情、大きく開いた目、少し開いた口、上がった眉）
+
+  悲しい（sad）
+
+  , sad expression, downcast eyes, slightly frowning, drooping shoulders
+  （悲しい表情、伏し目がち、少し眉を下げた、肩を落とした）
+
+  ---
+  📋 実際の生成手順（推奨: Bing Image Creator）
+
+  1. Bing Image Creator（無料・最も簡単）
+
+  1. https://www.bing.com/images/create にアクセス
+  2. Microsoftアカウントでログイン
+  3. 上記のプロンプト（英語版）を入力
+  4. 「作成」をクリック
+  5. 生成された画像から気に入ったものを選んでダウンロード
+  6. 各感情バリエーション（通常/嬉しい/ワクワク/驚き/悲しい）を5回生成
+
+  2. Leonardo.ai（無料枠あり・高品質）
+
+  1. https://leonardo.ai/ にアクセス
+  2. アカウント登録（無料で1日150クレジット）
+  3. 「Image Generation」を選択
+  4. モデル: Leonardo Anime XL または Anime Pastel Dream を選択
+  5. プロンプト入力
+  6. Image Dimensions: 1024x1024 を選択
+  7. Transparency: ON（透過背景の場合）
+  8. 「Generate」をクリック
+
+  3. Stable Diffusion（ローカル実行・完全無料）
+
+  # 1. Stable Diffusion WebUIインストール
+  git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
+  cd stable-diffusion-webui
+  # Windows: webui-user.bat を実行
+  # Mac/Linux: ./webui.sh を実行
+
+  # 2. ブラウザで http://localhost:7860 にアクセス
+
+  # 3. モデルダウンロード
+  # Civitai (https://civitai.com/) から以下のモデルをダウンロード：
+  # - "Anything V5" または "Counterfeit V3.0" （アニメ調）
+  # - "PixelArt Diffusion" （ピクセルアート専用）
+
+  # 4. プロンプト入力・生成
+
+  ---
+  🎨 サンプル画像風のプロンプト（特別版）
+
+  書籍サンプルのようなレトロなピクセルアート風にする場合：
+
+  ナナカ（ピクセルアート特化版）
+
+  pixel art style, retro 90s desktop pet, cute anime girl farmer character, green apron, straw hat, brown hair with green highlights, holding watercress, sitting pose, transparent background, 16-bit style, soft colors, simple design, chibi proportions, pastel palette, clean pixel edges, no anti-aliasing, 512x512 pixels
+
+  Negative: blurry, realistic, 3D, complex shading, modern art style
+
+  リョウ（ピクセルアート特化版）
+
+  pixel art style, retro 90s desktop pet, cute anime boy chef character, white chef coat, chef hat, black hair, holding cooking utensil, sitting pose, transparent background, 16-bit style, cool blue and white colors, simple design, chibi proportions, pastel palette, clean pixel edges, no anti-aliasing, 512x512 pixels
+
+  Negative: blurry, realistic, 3D, complex shading, modern art style
+
+  ---
+  💡 Z.ai Web UIでのアプローチ
+
+  Z.ai（claude.ai）では直接画像生成はできませんが、以下のように活用できます：
+
+  1. プロンプトリファイン
+    - 上記のプロンプトをclaude.aiに貼り付け
+    - 「このプロンプトをより良くして」と依頼
+    - キャラクター設定に基づいて最適化
+  2. 画像分析
+    - サンプル画像をアップロード
+    - 「この画像のスタイルを模倣するプロンプトを作成して」と依頼
+    - より詳細なプロンプトを生成
+
+  ---
+  📝 画像生成後の作業
+
+  生成した画像を以下のディレクトリに配置：
+
+  assets/characters/nanaka/
+  ├── normal.png      # 通常
+  ├── happy.png       # 嬉しい
+  ├── excited.png     # ワクワク
+  ├── surprised.png   # 驚き
+  └── sad.png         # 悲しい
+
+  assets/characters/ryou/
+  ├── normal.png      # 通常
+  ├── happy.png       # 嬉しい
+  ├── excited.png     # ワクワク
+  ├── surprised.png   # 驚き
+  └── sad.png         # 悲しい
+
+  ---
+  ✅ まとめ
+
+  Z.ai経由での画像生成は不可ですが、以下の方法で実現できます：
+
+  1. 最も簡単: Bing Image Creator（無料・DALL-E 3ベース）
+  2. 高品質: Leonardo.ai（無料枠あり）
+  3. 完全無料: Stable Diffusion（ローカル実行）
+
+  上記のプロンプトを使用して、ナナカとリョウの5種類の感情バリエーション画像（合計10枚）を生成してください！
+
+  生成が完了したら、OBSウェブソケット連携で自動的に感情に応じたキャラクター画像が切り替わります🎉

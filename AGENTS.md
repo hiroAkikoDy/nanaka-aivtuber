@@ -120,12 +120,6 @@ WORK_REPORT_YYYYMMDD_HHMI.md を作成してください。
 
 - 変更前に必ずこのAGENTS.mdを参照すること
 
-## 現在のSTEP1スコープ（これ以外は実装しない）
-- 書籍付属コードをcoreに移植
-- VOICEVOX起動確認
-- ダミーコメントで音声出力まで通す
-- YouTube・OBS連携はSTEP1では不要
-
 ## 環境
 - OS: Windows
 - Python: 3.x

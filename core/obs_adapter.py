@@ -1,6 +1,20 @@
+"""
+OBSアダプター（旧実装）
+
+【注意】このファイルは後方互換性のために残されています。
+新しい実装では agents/obs_agent.py の OBSAgent を使用してください。
+
+このクラスは aituber_system.py の talk_with_comment() メソッドで使用されており、
+Question/Answer のテキストソース更新のみを担当します。
+
+将来的には OBSAgent に統合予定です。
+"""
+
 import obsws_python as obs
 import os
 from dotenv import load_dotenv
+
+
 class OBSAdapter:
     def __init__(self) -> None:
         load_dotenv()

@@ -22,7 +22,7 @@
 2. 感情状態管理（LangGraph Ch9）— コメント感情 → AIVTuber感情変化 → VOICEVOX連動 ✅ 実装済み
 3. マルチペルソナ配信（LangChain Ch12）— 農家AIVTuber × シェフAIVTuberが議論 ✅ 実装済み
 
-## 実装済み機能一覧（STEP1〜STEP6）
+## 実装済み機能一覧（STEP1〜STEP7）
 - 基本AIVTuber機能（VOICEVOX連携・音声合成）
 - プロンプトテンプレート管理（LangChain）
 - 感情状態管理（EmotionAgent / ParameterAdapter）
@@ -35,6 +35,11 @@
 - YouTube Live配信連携（YouTubeAgent / LiveStreamingSystem）
 - OBS連携テキストファイル出力（current_speaker.txt / current_text.txt）
 - ダミーモード / ライブモード切替
+- **OBSウェブソケット連携（OBSAgent）**
+- **シーン切り替え自動化**
+- **画像ソース制御（表示・非表示・更新）**
+- **キャラクター画像管理システム**
+- **感情連動画像切り替え（通常/嬉しい/ワクワク/驚き/悲しい）**
 
 ## 実装ステップ
 - STEP 1：最小構成AIVTuber（書籍コードベース）✅ 完了
@@ -44,6 +49,7 @@
 - STEP 4：Neo4j Ch6 視聴者記憶 ✅ 完了（2026-05-11 12:22）
 - STEP 5：LangChain Ch12 マルチペルソナ ✅ 完了（2026-05-12）
 - STEP 6：YouTube Live配信連携 ✅ 完了（2026-05-12）
+- STEP 7：OBSウェブソケット連携・キャラクター画像表示 ✅ 完了（2026-05-13）
 
 ## 参考書籍・リポジトリ
 1. 「AITuberを作ってみたら生成AIプログラミングがよくわかった件」（日経・Python）

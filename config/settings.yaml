@@ -42,3 +42,45 @@ obs:
   speaker_file: "current_speaker.txt"
   text_file: "current_text.txt"
   max_text_length: 100  # OBSに表示する最大文字数
+
+  # OBS WebSocket設定
+  websocket:
+    enabled: false  # true: WebSocket有効 / false: テキストファイルのみ
+    host: "localhost"
+    port: 4455
+    password: ""  # OBS WebSocketのパスワード（設定している場合）
+
+  # シーン設定（OBS側のシーン名と一致させる）
+  scenes:
+    waiting: "待機シーン"
+    streaming: "配信シーン"
+    ending: "終了シーン"
+
+  # ソース設定（OBS側のソース名と一致させる）
+  sources:
+    nanaka_image: "ナナカ画像"
+    ryou_image: "リョウ画像"
+    speaker_text: "発言者名"
+    dialogue_text: "テキスト"
+
+# キャラクター設定
+characters:
+  nanaka:
+    name: "ナナカ"
+    image_dir: "assets/characters/nanaka"
+    emotions:
+      通常: "normal.png"
+      嬉しい: "happy.png"
+      ワクワク: "excited.png"
+      驚き: "surprised.png"
+      悲しい: "sad.png"
+
+  ryou:
+    name: "リョウ"
+    image_dir: "assets/characters/ryou"
+    emotions:
+      通常: "normal.png"
+      嬉しい: "happy.png"
+      ワクワク: "excited.png"
+      驚き: "surprised.png"
+      悲しい: "sad.png"

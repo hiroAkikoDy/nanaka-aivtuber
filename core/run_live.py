@@ -13,6 +13,7 @@ import yaml
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from agents.youtube_agent import YouTubeAgent
+from agents.obs_agent import OBSAgent
 from core.aituber_system import AITuberSystem
 
 
@@ -27,6 +28,9 @@ class LiveStreamingSystem:
 
         self.aituber_system = AITuberSystem()
 
+        # OBSエージェント初期化
+        self.obs_agent = OBSAgent(self.config)
+
         self.obs_config = self.config.get("obs", {})
         self.obs_enabled = self.obs_config.get("enabled", True)
         self.output_dir = self.obs_config.get("output_dir", "output")
@@ -36,13 +40,25 @@ class LiveStreamingSystem:
 
         os.makedirs(self.output_dir, exist_ok=True)
 
-    def update_obs_display(self, speaker: str, text: str):
+        # 現在表示中のキャラクター（キャラクター切り替え用）
+        self.current_character = None
+
+    def update_obs_display(self, speaker: str, text: str, emotion: str = "通常"):
+        """
+        OBS表示を更新（テキストファイル + WebSocket）
+
+        Args:
+            speaker: 発言者名
+            text: テキスト
+            emotion: 感情（デフォルト: "通常"）
+        """
         if not self.obs_enabled:
             return
 
         if len(text) > self.max_text_length:
             text = text[:self.max_text_length] + "..."
 
+        # テキストファイル出力（既存の機能）
         speaker_path = os.path.join(self.output_dir, self.speaker_file)
         text_path = os.path.join(self.output_dir, self.text_file)
 
@@ -53,6 +69,39 @@ class LiveStreamingSystem:
             f.write(text)
 
         print(f"[OBS] 更新: {speaker} - {text}")
+
+        # OBSウェブソケット経由でテキストソース更新（オプション）
+        if self.obs_agent.enabled and self.obs_agent.connected:
+            speaker_source = self.obs_config.get("sources", {}).get("speaker_text")
+            dialogue_source = self.obs_config.get("sources", {}).get("dialogue_text")
+
+            if speaker_source:
+                self.obs_agent.update_text_source(speaker_source, speaker)
+            if dialogue_source:
+                self.obs_agent.update_text_source(dialogue_source, text)
+
+    def show_character_with_emotion(self, character_name: str, emotion: str = "通常"):
+        """
+        キャラクターを感情付きで表示
+
+        Args:
+            character_name: キャラクター名（"ナナカ" or "リョウ"）
+            emotion: 感情（"通常", "嬉しい", "ワクワク", "驚き", "悲しい"）
+        """
+        if not self.obs_agent.enabled or not self.obs_agent.connected:
+            return
+
+        # キャラクター名を英語に変換
+        character_key = "nanaka" if character_name == "ナナカ" else "ryou"
+
+        # 前のキャラクターから切り替え
+        if self.current_character and self.current_character != character_key:
+            self.obs_agent.switch_character(self.current_character, character_key, emotion)
+        else:
+            # 初回表示または同じキャラクター（感情のみ変更）
+            self.obs_agent.show_character(character_key, emotion)
+
+        self.current_character = character_key
 
     def clear_obs_display(self):
         self.update_obs_display("", "")
@@ -90,10 +139,18 @@ class LiveStreamingSystem:
                         for turn in dialogue:
                             persona = turn["persona"]
                             text = turn["text"]
+                            emotion = turn.get("emotion", "通常")
 
-                            print(f"[{persona}] {text}")
+                            # ペルソナ名を日本語に変換
+                            persona_name = "ナナカ" if persona == "nanaka" else "リョウ"
 
-                            self.update_obs_display(persona, text)
+                            print(f"[{persona_name}] {text} (感情: {emotion})")
+
+                            # キャラクター表示（感情連動）
+                            self.show_character_with_emotion(persona_name, emotion)
+
+                            # テキスト表示
+                            self.update_obs_display(persona_name, text, emotion)
 
                             time.sleep(len(text) * 0.3)
                     else:

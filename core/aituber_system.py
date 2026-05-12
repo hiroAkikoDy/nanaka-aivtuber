@@ -108,8 +108,8 @@ class AITuberSystem:
 
         Returns:
             list[dict]: [
-                {"persona": "nanaka", "text": "...", "speaker_id": 46},
-                {"persona": "ryou", "text": "...", "speaker_id": 3},
+                {"persona": "nanaka", "text": "...", "speaker_id": 46, "emotion": "嬉しい"},
+                {"persona": "ryou", "text": "...", "speaker_id": 3, "emotion": "通常"},
                 ...
             ]
         """
@@ -122,6 +122,11 @@ class AITuberSystem:
         emotion = emotion_result["emotion"]
 
         dialogue = self.dialogue_coordinator.coordinate_dialogue(comment, emotion)
+
+        # 各ターンに感情情報を追加
+        for turn in dialogue:
+            if "emotion" not in turn:
+                turn["emotion"] = emotion  # コメントの感情をデフォルトとして設定
 
         nanaka_turns = [t for t in dialogue if t['persona'] == 'nanaka']
         if nanaka_turns:

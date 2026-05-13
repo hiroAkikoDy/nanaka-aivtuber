@@ -125,39 +125,44 @@ class LiveStreamingSystem:
                 comments = self.youtube_agent.fetch_comments()
 
                 for comment in comments:
-                    viewer_name = comment["author"]
-                    comment_text = comment["text"]
+                    try:
+                        viewer_name = comment["author"]
+                        comment_text = comment["text"]
 
-                    print(f"\n[視聴者] {viewer_name}: {comment_text}")
+                        print(f"\n[視聴者] {viewer_name}: {comment_text}")
 
-                    self.update_obs_display(viewer_name, comment_text)
-                    time.sleep(2)
+                        self.update_obs_display(viewer_name, comment_text)
+                        time.sleep(2)
 
-                    if self.config.get("multi_persona", {}).get("enabled", False):
-                        dialogue = self.aituber_system.get_dialogue_response(viewer_name, comment_text)
+                        if self.config.get("multi_persona", {}).get("enabled", False):
+                            dialogue = self.aituber_system.get_dialogue_response(viewer_name, comment_text)
 
-                        for turn in dialogue:
-                            persona = turn["persona"]
-                            text = turn["text"]
-                            emotion = turn.get("emotion", "通常")
+                            for turn in dialogue:
+                                persona = turn["persona"]
+                                text = turn["text"]
+                                emotion = turn.get("emotion", "通常")
 
-                            # ペルソナ名を日本語に変換
-                            persona_name = "ナナカ" if persona == "nanaka" else "リョウ"
+                                # ペルソナ名を日本語に変換
+                                persona_name = "ナナカ" if persona == "nanaka" else "リョウ"
 
-                            print(f"[{persona_name}] {text} (感情: {emotion})")
+                                print(f"[{persona_name}] {text} (感情: {emotion})")
 
-                            # キャラクター表示（感情連動）
-                            self.show_character_with_emotion(persona_name, emotion)
+                                # キャラクター表示（感情連動）
+                                self.show_character_with_emotion(persona_name, emotion)
 
-                            # テキスト表示
-                            self.update_obs_display(persona_name, text, emotion)
+                                # テキスト表示
+                                self.update_obs_display(persona_name, text, emotion)
 
-                            time.sleep(len(text) * 0.3)
-                    else:
-                        self.aituber_system.talk_with_comment(viewer_name, comment_text)
-                        self.update_obs_display("ナナカ", "応答を生成しました")
+                                time.sleep(len(text) * 0.3)
+                        else:
+                            self.aituber_system.talk_with_comment(viewer_name, comment_text)
+                            self.update_obs_display("ナナカ", "応答を生成しました")
 
-                    self.clear_obs_display()
+                        self.clear_obs_display()
+                    except Exception as e:
+                        print(f"[ERROR] コメント処理中にエラー: {e}")
+                        print(f"[ERROR] スキップして次のコメントへ: {comment}")
+                        continue
 
                 time.sleep(self.youtube_agent.polling_interval)
 
@@ -183,42 +188,47 @@ class DummyLiveStreamingSystem(LiveStreamingSystem):
         print("\nダミーコメント処理開始...\n")
 
         for comment in dummy_comments:
-            viewer_name = comment["author"]
-            comment_text = comment["text"]
+            try:
+                viewer_name = comment["author"]
+                comment_text = comment["text"]
 
-            print(f"\n[視聴者] {viewer_name}: {comment_text}")
-            self.update_obs_display(viewer_name, comment_text)
-            time.sleep(2)
+                print(f"\n[視聴者] {viewer_name}: {comment_text}")
+                self.update_obs_display(viewer_name, comment_text)
+                time.sleep(2)
 
-            # マルチペルソナモードの確認
-            if self.config.get("multi_persona", {}).get("enabled", False):
-                # キャラクター表示付きで応答
-                dialogue = self.aituber_system.get_dialogue_response(viewer_name, comment_text)
+                # マルチペルソナモードの確認
+                if self.config.get("multi_persona", {}).get("enabled", False):
+                    # キャラクター表示付きで応答
+                    dialogue = self.aituber_system.get_dialogue_response(viewer_name, comment_text)
 
-                for turn in dialogue:
-                    persona = turn["persona"]
-                    text = turn["text"]
-                    emotion = turn.get("emotion", "通常")
+                    for turn in dialogue:
+                        persona = turn["persona"]
+                        text = turn["text"]
+                        emotion = turn.get("emotion", "通常")
 
-                    # ペルソナ名を日本語に変換
-                    persona_name = "ナナカ" if persona == "nanaka" else "リョウ"
+                        # ペルソナ名を日本語に変換
+                        persona_name = "ナナカ" if persona == "nanaka" else "リョウ"
 
-                    print(f"[{persona_name}] {text} (感情: {emotion})")
+                        print(f"[{persona_name}] {text} (感情: {emotion})")
 
-                    # キャラクター表示（感情連動）
-                    self.show_character_with_emotion(persona_name, emotion)
+                        # キャラクター表示（感情連動）
+                        self.show_character_with_emotion(persona_name, emotion)
 
-                    # テキスト表示
-                    self.update_obs_display(persona_name, text, emotion)
+                        # テキスト表示
+                        self.update_obs_display(persona_name, text, emotion)
 
-                    time.sleep(len(text) * 0.3)
-            else:
-                # 単独モード（旧実装）
-                self.aituber_system.talk_with_comment(viewer_name, comment_text)
-                self.update_obs_display("ナナカ", "応答を生成しました")
+                        time.sleep(len(text) * 0.3)
+                else:
+                    # 単独モード（旧実装）
+                    self.aituber_system.talk_with_comment(viewer_name, comment_text)
+                    self.update_obs_display("ナナカ", "応答を生成しました")
 
-            self.clear_obs_display()
-            time.sleep(3)
+                self.clear_obs_display()
+                time.sleep(3)
+            except Exception as e:
+                print(f"[ERROR] ダミーコメント処理中にエラー: {e}")
+                print(f"[ERROR] スキップして次のコメントへ: {comment}")
+                continue
 
         print("\nダミーモード完了")
 

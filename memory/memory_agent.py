@@ -9,16 +9,29 @@ JST = timezone(timedelta(hours=9))
 class MemoryAgent:
     def __init__(self):
         load_dotenv()
+        self._fallback_memory = {}
+        self._use_fallback = False
         uri = os.getenv("NEO4J_URI")
         user = os.getenv("NEO4J_USER")
         password = os.getenv("NEO4J_PASSWORD")
-        self.driver = GraphDatabase.driver(uri, auth=(user, password))
+        try:
+            self.driver = GraphDatabase.driver(uri, auth=(user, password))
+            self.driver.verify_connectivity()
+        except Exception as e:
+            print(f"[WARNING] Neo4j接続失敗: {e}")
+            print("[WARNING] インメモリフォールバックで動作します")
+            self.driver = None
+            self._use_fallback = True
 
     def close(self):
-        self.driver.close()
+        if self.driver:
+            self.driver.close()
 
     def save_interaction(self, viewer_name: str, comment: str, emotion: str, response: str) -> None:
         now = datetime.now(timezone.utc).isoformat()
+        if self._use_fallback:
+            self._save_fallback(viewer_name, comment, emotion, response, now)
+            return
         try:
             with self.driver.session() as session:
                 session.run(
@@ -43,7 +56,19 @@ class MemoryAgent:
         except Exception as e:
             print(f"[MemoryAgent] save_interaction error: {e}")
 
+    def _save_fallback(self, viewer_name: str, comment: str, emotion: str, response: str, now: str):
+        if viewer_name not in self._fallback_memory:
+            self._fallback_memory[viewer_name] = []
+        self._fallback_memory[viewer_name].append({
+            "text": comment,
+            "response": response,
+            "timestamp": now,
+            "emotion": emotion,
+        })
+
     def get_memory(self, viewer_name: str) -> str:
+        if self._use_fallback:
+            return self._get_memory_fallback(viewer_name)
         try:
             with self.driver.session() as session:
                 result = session.run(
@@ -72,6 +97,21 @@ class MemoryAgent:
         except Exception as e:
             print(f"[MemoryAgent] get_memory error: {e}")
             return ""
+
+    def _get_memory_fallback(self, viewer_name: str) -> str:
+        records = self._fallback_memory.get(viewer_name, [])
+        if not records:
+            return ""
+        recent = sorted(records, key=lambda x: x["timestamp"], reverse=True)[:3]
+        lines = ["過去の会話履歴:"]
+        for r in recent:
+            ts_utc = datetime.fromisoformat(r["timestamp"]).replace(tzinfo=timezone.utc)
+            ts_jst = ts_utc.astimezone(JST)
+            ts_str = ts_jst.strftime("%Y-%m-%d %H:%M")
+            lines.append(
+                f"- [{ts_str}] コメント「{r['text']}」→ 応答「{r['response']}」"
+            )
+        return "\n".join(lines)
 
 
 if __name__ == "__main__":

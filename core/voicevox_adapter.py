@@ -14,6 +14,10 @@ def load_settings():
 
 
 class VoicevoxAdapter:
+    SPEED_MIN, SPEED_MAX = 0.5, 2.0
+    PITCH_MIN, PITCH_MAX = -0.5, 0.5
+    TIMEOUT = 10
+
     def __init__(self) -> None:
         settings = load_settings()
         vv = settings["voicevox"]
@@ -25,39 +29,41 @@ class VoicevoxAdapter:
             "text": text,
             "speaker": speaker_id,
         }
-        response = requests.post(self.url + "audio_query", params=item_data)
+        response = requests.post(self.url + "audio_query", params=item_data, timeout=self.TIMEOUT)
         return response.json()
 
     def __create_request_audio(self, query_data, speaker_id: int) -> bytes:
         a_params = {"speaker": speaker_id}
         headers = {"accept": "audio/wav", "Content-Type": "application/json"}
-        res = requests.post(self.url + "synthesis", params=a_params, data=json.dumps(query_data), headers=headers)
+        res = requests.post(self.url + "synthesis", params=a_params, data=json.dumps(query_data), headers=headers, timeout=self.TIMEOUT)
         print(res.status_code)
         return res.content
 
     def get_voice(self, text: str, speaker_id: int = None, speed: float = 1.0, pitch: float = 0.0):
-        """
-        音声を生成する
-
-        Args:
-            text: 読み上げるテキスト
-            speaker_id: VOICEVOXのspeaker_id（Noneの場合はデフォルト値を使用）
-            speed: 話速（1.0が標準）
-            pitch: ピッチ（0.0が標準）
-
-        Returns:
-            tuple: (data, sample_rate)
-        """
         if speaker_id is None:
-            speaker_id = self.speaker_id  # 既存のデフォルト値
+            speaker_id = self.speaker_id
 
-        query_data = self.__create_audio_query(text, speaker_id=speaker_id)
-        query_data["speedScale"] = speed
-        query_data["pitchScale"] = pitch
-        audio_bytes = self.__create_request_audio(query_data, speaker_id=speaker_id)
-        audio_stream = io.BytesIO(audio_bytes)
-        data, sample_rate = soundfile.read(audio_stream)
-        return data, sample_rate
+        if speed < self.SPEED_MIN or speed > self.SPEED_MAX:
+            clamped = max(self.SPEED_MIN, min(self.SPEED_MAX, speed))
+            print(f"[WARNING] speed={speed} はVOICEVOX許容範囲外。{clamped}にクランプしました")
+            speed = clamped
+        if pitch < self.PITCH_MIN or pitch > self.PITCH_MAX:
+            clamped = max(self.PITCH_MIN, min(self.PITCH_MAX, pitch))
+            print(f"[WARNING] pitch={pitch} はVOICEVOX許容範囲外。{clamped}にクランプしました")
+            pitch = clamped
+
+        try:
+            query_data = self.__create_audio_query(text, speaker_id=speaker_id)
+            query_data["speedScale"] = speed
+            query_data["pitchScale"] = pitch
+            audio_bytes = self.__create_request_audio(query_data, speaker_id=speaker_id)
+            audio_stream = io.BytesIO(audio_bytes)
+            data, sample_rate = soundfile.read(audio_stream)
+            return data, sample_rate
+        except requests.exceptions.RequestException as e:
+            print(f"[WARNING] VOICEVOX通信エラー: {e}")
+            print("[WARNING] 音声をスキップします")
+            return None, None
 
 
 if __name__ == "__main__":

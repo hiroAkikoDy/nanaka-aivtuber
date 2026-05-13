@@ -69,7 +69,8 @@ class AITuberSystem:
                     speed=speed,
                     pitch=pitch
                 )
-                self.play_sound.play_sound(data, rate)
+                if data is not None:
+                    self.play_sound.play_sound(data, rate)
 
             # OBS表示: 最初のナナカの発言
             nanaka_turns = [t for t in dialogue if t['persona'] == 'nanaka']
@@ -92,7 +93,8 @@ class AITuberSystem:
             if self.obs_adapter:
                 self.obs_adapter.set_question(comment)
                 self.obs_adapter.set_answer(response_text)
-            self.play_sound.play_sound(data, rate)
+            if data is not None:
+                self.play_sound.play_sound(data, rate)
             self.memory_agent.save_interaction(viewer_name, comment, emotion, response_text)
             print(f"[記憶保存] {viewer_name} の会話を保存しました")
 

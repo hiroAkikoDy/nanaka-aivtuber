@@ -12,7 +12,7 @@ class MemoryAgent:
         self._fallback_memory = {}
         self._use_fallback = False
         uri = os.getenv("NEO4J_URI")
-        user = os.getenv("NEO4J_USER")
+        user = os.getenv("NEO4J_USERNAME") or os.getenv("NEO4J_USER")
         password = os.getenv("NEO4J_PASSWORD")
         try:
             self.driver = GraphDatabase.driver(uri, auth=(user, password))

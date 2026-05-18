@@ -9,7 +9,8 @@ voicevox:
   speaker_id: 3
 
 audio:
-  output_device_name: "CABLE Input"
+  output_device_name: "Realtek"
+
 
 multi_persona:
   enabled: true  # true: マルチペルソナモード / false: 単独モード
@@ -24,8 +25,8 @@ youtube:
   credentials_path: "credentials/client_secret.json"
   token_path: "credentials/token.json"
 
-  # 配信情報
-  video_id: null  # 配信開始時に自動取得（または手動設定）
+  # 配信情報（環境変数 YOUTUBE_VIDEO_ID または自動取得）
+  video_id: null
 
   # ポーリング設定
   polling_interval: 5  # 秒単位（YouTube推奨: 5秒以上）
@@ -45,10 +46,10 @@ obs:
 
   # OBS WebSocket設定
   websocket:
-    enabled: false  # true: WebSocket有効 / false: テキストファイルのみ
+    enabled: true  # true: WebSocket有効 / false: テキストファイルのみ
     host: "localhost"
     port: 4455
-    password: ""  # OBS WebSocketのパスワード（設定している場合）
+    password: ""  # OBS WebSocketのパスワード（環境変数 OBS_WS_PASSWORD で上書き）
 
   # シーン設定（OBS側のシーン名と一致させる）
   scenes:

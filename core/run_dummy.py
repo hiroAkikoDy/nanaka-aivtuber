@@ -76,7 +76,8 @@ def main():
                     speed=speed,
                     pitch=pitch
                 )
-                play_sound.play_sound(data, rate)
+                if data is not None:
+                    play_sound.play_sound(data, rate)
 
             # 最後のナナカの発言を記憶に保存
             nanaka_turns = [t for t in dialogue if t['persona'] == 'nanaka']
@@ -107,7 +108,8 @@ def main():
             print(f"ナナカ: {response_text}")
 
             data, rate = voicevox_adapter.get_voice(response_text, speed=speed, pitch=pitch)
-            play_sound.play_sound(data, rate)
+            if data is not None:
+                play_sound.play_sound(data, rate)
 
             memory_agent.save_interaction(viewer_name, comment, emotion, response_text)
             print(f"[記憶保存] {viewer_name} の会話を保存しました")

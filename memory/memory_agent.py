@@ -56,6 +56,37 @@ class MemoryAgent:
         except Exception as e:
             print(f"[MemoryAgent] save_interaction error: {e}")
 
+    def save_validation(self, recipe_name: str, state: dict):
+        if self._use_fallback:
+            print("[MemoryAgent] save_validation: fallback中、スキップ")
+            return False
+        try:
+            with self.driver.session() as session:
+                session.run(
+                    """
+                    MERGE (r:Recipe {name: $recipe_name})
+                    SET r.taste_score = $taste_score,
+                        r.appearance_score = $appearance_score,
+                        r.difficulty_score = $difficulty_score,
+                        r.overall_score = $overall_score,
+                        r.validated = true,
+                        r.validated_at = datetime(),
+                        r.validation_note = $feedback_text,
+                        r.validation_count = coalesce(r.validation_count, 0) + 1
+                    """,
+                    recipe_name=recipe_name,
+                    taste_score=state.get("taste_score", 0.0),
+                    appearance_score=state.get("appearance_score", 0.0),
+                    difficulty_score=state.get("difficulty_score", 0.0),
+                    overall_score=state.get("overall_score", 0.0),
+                    feedback_text=state.get("feedback_text", ""),
+                )
+                print(f"[MemoryAgent] save_validation: Recipe '{recipe_name}' 保存完了")
+                return True
+        except Exception as e:
+            print(f"[MemoryAgent] save_validation error: {e}")
+            return False
+
     def _save_fallback(self, viewer_name: str, comment: str, emotion: str, response: str, now: str):
         if viewer_name not in self._fallback_memory:
             self._fallback_memory[viewer_name] = []

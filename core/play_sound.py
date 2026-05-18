@@ -1,34 +1,40 @@
 import sounddevice as sd
-from typing import TypedDict
+
+
 class PlaySound:
-    def __init__(self, output_device_name= "CABLE Input") -> None:
-        # 指定された出力デバイス名に基づいてデバイスIDを取得
+    def __init__(self, output_device_name="CABLE Input") -> None:
+        self.available = False
+        if output_device_name is None:
+            print("[PlaySound] 音声出力デバイス未指定。音声をスキップします")
+            return
         output_device_id = self._search_output_device_id(output_device_name)
-        # 入力デバイスIDは使用しないため、デフォルトの0を設定
-        input_device_id = 0
-        # デフォルトのデバイス設定を更新
-        sd.default.device = [input_device_id, output_device_id]
-
-    def _search_output_device_id(self, output_device_name, output_device_host_api=0) -> int:
-        # 利用可能なデバイスの情報を取得
-        devices = sd.query_devices()
-        output_device_id = None
-        # 指定された出力デバイス名とホストAPIに合致するデバイスIDを検索
-        for device in devices:
-            is_output_device_name = output_device_name in device["name"]
-            is_output_device_host_api = device["hostapi"] == output_device_host_api
-            if is_output_device_name and is_output_device_host_api:
-                output_device_id = device["index"]
-                break
-
-        # 合致するデバイスが見つからなかった場合の処理
         if output_device_id is None:
-            print("output_deviceが見つかりませんでした")
-            exit()
-        return output_device_id
+            print(f"[PlaySound] 出力デバイス '{output_device_name}' が見つかりません。音声をスキップします")
+            return
+        sd.default.device = [None, output_device_id]
+        sd.default.channels = [None, 2]
+        self.available = True
+        print(f"[PlaySound] 音声出力デバイス: index={output_device_id}")
+
+    def _search_output_device_id(self, output_device_name, output_device_host_api=0):
+        devices = sd.query_devices()
+        for device in devices:
+            if (output_device_name in device["name"]
+                    and device["hostapi"] == output_device_host_api
+                    and device["max_output_channels"] > 0):
+                return device["index"]
+        return None
+
     def play_sound(self, data, rate) -> bool:
-        # 音声データを再生
-        sd.play(data, rate)
-        # 再生が完了するまで待機
-        sd.wait()
-        return True
+        if not self.available or data is None:
+            return False
+        try:
+            if data.ndim == 1:
+                import numpy as np
+                data = np.column_stack([data, data])
+            sd.play(data, rate)
+            sd.wait()
+            return True
+        except Exception as e:
+            print(f"[PlaySound] 音声再生エラー: {e}")
+            return False

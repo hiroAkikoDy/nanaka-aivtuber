@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>実食検証システム - ナナカファーム</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; background: #f5f5f5; }
+        h1 { color: #2e7d32; border-bottom: 2px solid #4caf50; padding-bottom: 8px; }
+        h2 { color: #388e3c; }
+        .card { background: white; border-radius: 8px; padding: 20px; margin: 16px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .score-display { font-size: 2em; font-weight: bold; color: #2e7d32; text-align: center; }
+        label { display: block; margin: 12px 0 4px; font-weight: bold; color: #555; }
+        input[type="range"] { width: 100%; }
+        .range-value { display: inline-block; width: 40px; text-align: center; font-weight: bold; color: #2e7d32; }
+        textarea { width: 100%; height: 80px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: #4caf50; color: white; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer; font-size: 16px; margin: 4px; }
+        button:hover { background: #388e3c; }
+        button.secondary { background: #757575; }
+        button.secondary:hover { background: #616161; }
+        .status { padding: 8px; border-radius: 4px; margin: 8px 0; }
+        .status-ok { background: #e8f5e9; color: #2e7d32; }
+        .status-wait { background: #fff3e0; color: #e65100; }
+        .status-empty { background: #e3f2fd; color: #1565c0; }
+    </style>
+</head>
+<body>
+    <h1>実食検証システム（Human-in-the-loop）</h1>
+
+    {% if not state %}
+    <div class="card">
+        <h2>レシピ選択</h2>
+        <p>検証するレシピ名を入力して「開始」を押してください。</p>
+        <form action="/start" method="POST">
+            <label>レシピ名</label>
+            <input type="text" name="recipe_name" value="クレソンサラダ" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; box-sizing:border-box;">
+            <br><br>
+            <button type="submit">検証開始</button>
+        </form>
+    </div>
+
+    {% elif state.validated_at %}
+    <div class="card">
+        <h2>検証完了 ✅</h2>
+        <div class="status status-ok">AuraDBに保存しました</div>
+        <p><strong>レシピ:</strong> {{ state.recipe_name }}</p>
+        <p><strong>AI提案:</strong> {{ state.ai_suggestion }}</p>
+        <table style="width:100%; border-collapse:collapse;">
+            <tr><td style="padding:4px;">味</td><td>{{ state.taste_score }}</td></tr>
+            <tr><td style="padding:4px;">見た目</td><td>{{ state.appearance_score }}</td></tr>
+            <tr><td style="padding:4px;">難易度</td><td>{{ state.difficulty_score }}</td></tr>
+        </table>
+        <div class="score-display">{{ state.overall_score }}</div>
+        <p style="text-align:center; color:#888;">総合スコア（味×0.6 + 見た目×0.2 + 難易度×0.2）</p>
+        {% if state.feedback_text %}<p><strong>フィードバック:</strong> {{ state.feedback_text }}</p>{% endif %}
+        <p><strong>Neo4j更新:</strong> {{ "成功" if state.neo4j_updated else "スキップ" }}</p>
+        <p><strong>日時:</strong> {{ state.validated_at }}</p>
+        <a href="/reset"><button type="button" class="secondary">新しい検証</button></a>
+    </div>
+
+    {% else %}
+    <div class="card">
+        <h2>{{ state.recipe_name }}</h2>
+        <div class="status status-wait">WebUIで評価を入力してください</div>
+        <p><strong>AI提案:</strong> {{ state.ai_suggestion }}</p>
+    </div>
+
+    <div class="card">
+        <form action="/submit" method="POST">
+            <label>味スコア: <span class="range-value" id="taste_val">{{ state.taste_score or 3 }}</span></label>
+            <input type="range" name="taste_score" min="0" max="5" step="0.5" value="{{ state.taste_score or 3 }}" oninput="document.getElementById('taste_val').textContent=this.value">
+
+            <label>見た目スコア: <span class="range-value" id="appearance_val">{{ state.appearance_score or 3 }}</span></label>
+            <input type="range" name="appearance_score" min="0" max="5" step="0.5" value="{{ state.appearance_score or 3 }}" oninput="document.getElementById('appearance_val').textContent=this.value">
+
+            <label>難易度スコア: <span class="range-value" id="difficulty_val">{{ state.difficulty_score or 3 }}</span> <small>（低いほど簡単）</small></label>
+            <input type="range" name="difficulty_score" min="0" max="5" step="0.5" value="{{ state.difficulty_score or 3 }}" oninput="document.getElementById('difficulty_val').textContent=this.value">
+
+            <label>フィードバック（任意）</label>
+            <textarea name="feedback_text" placeholder="感想や改善点を自由に入力..."></textarea>
+
+            <br>
+            <button type="submit">送信</button>
+            <a href="/reset"><button type="button" class="secondary">キャンセル</button></a>
+        </form>
+    </div>
+    {% endif %}
+</body>
+</html>

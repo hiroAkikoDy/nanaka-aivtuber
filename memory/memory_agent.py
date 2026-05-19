@@ -72,7 +72,8 @@ class MemoryAgent:
                         r.validated = true,
                         r.validated_at = datetime(),
                         r.validation_note = $feedback_text,
-                        r.validation_count = coalesce(r.validation_count, 0) + 1
+                        r.validation_count = coalesce(r.validation_count, 0) + 1,
+                        r.final_score = $overall_score / 5.0
                     """,
                     recipe_name=recipe_name,
                     taste_score=state.get("taste_score", 0.0),

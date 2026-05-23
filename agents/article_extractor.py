@@ -28,7 +28,7 @@ DB_NAME = os.getenv("NEO4J_USERNAME")
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-WP_API_BASE = "https://nanaka-farm.com/wp-json/wp/v2/posts"
+WP_API_BASE = "https://nanaka-farm.com/blog/wp-json/wp/v2/posts"
 
 EXTRACTION_PROMPT = """あなたはブログ記事のメタデータ分類エキスパートです。
 ナナカファーム（熊本のクレソン農家）のブログ記事を分析し、
